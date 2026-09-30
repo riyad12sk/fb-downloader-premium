@@ -30,6 +30,9 @@ BASE_DIR = Path(__file__).resolve().parent
 DOWNLOAD_DIR = BASE_DIR / "downloads"
 DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
+# Cookies file path (Ensure cookies.txt is uploaded in GitHub root)
+COOKIE_FILE = BASE_DIR / "cookies.txt"
+
 MAX_FILE_SIZE = 500 * 1024 * 1024
 MAX_FILE_AGE = 30 * 60
 CLEANUP_INTERVAL = 10 * 60
@@ -581,7 +584,6 @@ const readyBtn =
     document.getElementById("readyBtn");
 
 
-// Show or hide clear button based on input value
 urlInput.addEventListener("input", () => {
     if (urlInput.value.trim() !== "") {
         clearBtn.style.display = "block";
@@ -591,7 +593,6 @@ urlInput.addEventListener("input", () => {
 });
 
 
-// Clear input value on click
 clearBtn.addEventListener("click", () => {
     urlInput.value = "";
     clearBtn.style.display = "none";
@@ -832,13 +833,12 @@ def download_video():
 
             "Accept-Language":
                 "en-US,en;q=0.9"
-        },
-
-        # YouTube JavaScript challenge support
-        "js_runtimes": {
-            "node": {}
         }
     }
+
+    # Add cookiefile if exists
+    if COOKIE_FILE.exists():
+        options["cookiefile"] = str(COOKIE_FILE)
 
     try:
 
@@ -959,4 +959,4 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=port,
         debug=False
-)
+            )
